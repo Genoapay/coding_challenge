@@ -1,10 +1,9 @@
 package com.latitude.genoapay.codingchallenge.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.latitude.genoapay.codingchallenge.request.StockRequest;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import com.latitude.genoapay.codingchallenge.util.JsonDateDeserializer;
 
 import java.util.Date;
 
@@ -13,8 +12,7 @@ public class StockResponse {
     private StockRequest stockRequest;
 
     @JsonProperty("Processed date time")
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-//    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+    @JsonDeserialize(using = JsonDateDeserializer.class)
     private Date processedDateTime;
 
     @JsonProperty("Max profit")

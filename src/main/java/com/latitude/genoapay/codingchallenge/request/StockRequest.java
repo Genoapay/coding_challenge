@@ -1,11 +1,8 @@
 package com.latitude.genoapay.codingchallenge.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.latitude.genoapay.codingchallenge.util.JsonDateDeserializer;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -15,18 +12,10 @@ public class StockRequest {
     private String identifier;
 
     @JsonProperty("Start date time")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-//    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-//    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-//    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
     @JsonDeserialize(using = JsonDateDeserializer.class)
     private Date startDateTime;
 
     @JsonProperty("End date time")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-//    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-//    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-//    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
     @JsonDeserialize(using = JsonDateDeserializer.class)
     private Date endDateTime;
 

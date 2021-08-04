@@ -3,9 +3,10 @@ package com.latitude.genoapay.codingchallenge.service;
 import com.latitude.genoapay.codingchallenge.request.StockRequest;
 import com.latitude.genoapay.codingchallenge.response.StockResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.util.StringUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +14,8 @@ import java.util.Date;
 public class StockService {
 
     private static final long MINUTE_MILLISECODS = 60000L;
+    private static Logger logger = LogManager.getLogger(StockService.class);
+
 
     public boolean isValidRequest(StockRequest request) {
         return StringUtils.hasText(request.getIdentifier()) && request.getEndDateTime() != null
@@ -25,12 +28,21 @@ public class StockService {
         int[] stockPricesArr = request.getStockPrices();
 
         Date dayStartTime = getDayStartTime(startTime);
+        // If start time or end times are prior to day start time 10:00, the Index is assumed to be zero
         int startIdx = getDiffInMinutes(dayStartTime, startTime);
         int endIdx = getDiffInMinutes(dayStartTime, endTime);
         if (startIdx == endIdx) {
-            throw new Exception("Start and End Times are out of range");
+            if (startIdx == 0) {
+                // If both start and end dates are prior to day start time, exception is thrown
+                throw new Exception("Start and End Times are out of range");
+            } else {
+                throw new Exception("Start and End Times are equal - Profit cannot be calculated");
+            }
+        } else if (endIdx < startIdx) {
+            throw new Exception("End date cannot be before start date");
         }
         if (endIdx > stockPricesArr.length) {
+            // If end time is greater than the Array of stock prices, end index will be the last element in Stock prices
             endIdx = stockPricesArr.length - 1;
         }
 
@@ -57,7 +69,7 @@ public class StockService {
             }
         }
         StockResponse response = new StockResponse(request, new Date(), maxProfit, bestBuy, bestSell);
-        System.out.println("Profit : " + maxProfit + " (Buy at $" + bestBuy + ", Sell at $" + bestSell + ")");
+        logger.debug("Profit : $" + maxProfit + " (Buy at $" + bestBuy + ", Sell at $" + bestSell + ")");
         return response;
     }
 
