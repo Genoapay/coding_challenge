@@ -22,7 +22,7 @@ public class StockController {
     @GetMapping(value = "/maxProfit", produces = {"application/json"}, consumes = "application/json")
     public ResponseEntity<Object> getMaxProfit(@RequestBody StockRequest request) {
         if (!stockService.isValidRequest(request)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Request - Missing parameters");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR: Invalid Request - Missing parameters");
 //            return ResponseEntity.badRequest().build();;
         }
 
@@ -30,7 +30,8 @@ public class StockController {
         try {
             response = stockService.getMaximumProfit(request);
             if (response.getMaxProfit() == 0) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot make any Profit within the Start and End Times");
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: Cannot make any Profit within the Start and End Times");
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
