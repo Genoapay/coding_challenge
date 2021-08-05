@@ -8,19 +8,19 @@ import java.util.Date;
 
 public class StockRequest {
 
-    @JsonProperty("Identifier")
+    @JsonProperty("identifier")
     private String identifier;
 
-    @JsonProperty("Start date time")
+    @JsonProperty("startDateTime")
     private Date startDateTime;
 
-    @JsonProperty("End date time")
+    @JsonProperty("endDateTime")
     private Date endDateTime;
 
-    @JsonProperty("Array of stock prices")
-    private int[] stockPrices;
+    @JsonProperty("stockPrices")
+    private String stockPrices;
 
-    public StockRequest(String identifier, Date startDateTime, Date endDateTime, int[] stockPrices) {
+    public StockRequest(String identifier, Date startDateTime, Date endDateTime, String stockPrices) {
         this.identifier = identifier;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
@@ -51,11 +51,11 @@ public class StockRequest {
         this.endDateTime = endDateTime;
     }
 
-    public int[] getStockPrices() {
+    public String getStockPrices() {
         return stockPrices;
     }
 
-    public void setStockPrices(int[] stockPrices) {
+    public void setStockPrices(String stockPrices) {
         this.stockPrices = stockPrices;
     }
 }

@@ -51,12 +51,13 @@ public class CodingChallengeApplicationTests {
     @Test
     void whenValidInput_thenReturns200() throws Exception {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
+//        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
+        String stockValues = "10, 7, 5, 8, 11, 9";
         StockRequest request = new StockRequest("latitude", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
 
         logger.debug(objectMapper.writeValueAsString(request));
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/stock/maxProfit")
+                .post("/stock/maxProfit")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
 //                .content(getRequestJsonString("latitude", "2021-08-04 10:01:00", "2021-08-04 10:06:00", stockValues))
@@ -68,12 +69,13 @@ public class CodingChallengeApplicationTests {
 
     @Test
     void testResponseContentType() throws Exception {
-        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
+//        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
+        String stockValues = "10, 7, 5, 8, 11, 9";
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StockRequest request = new StockRequest("latitude", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/stock/maxProfit")
+                .post("/stock/maxProfit")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
 //                .content(getRequestJsonString("latitude", "2021-08-04 10:01:00", "2021-08-04 10:06:00", stockValues))
@@ -89,12 +91,13 @@ public class CodingChallengeApplicationTests {
     @Test
         // Bad Request
     void whenInvalidParameters_thenReturns400() throws Exception {
-        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
+//        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
+        String stockValues = "10, 7, 5, 8, 11, 9";
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StockRequest request = new StockRequest("", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/stock/maxProfit")
+                .post("/stock/maxProfit")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
 //                .content(getRequestJsonString("", "2021-08-04 10:01:00", "2021-08-04 10:06:00", stockValues))
@@ -108,12 +111,13 @@ public class CodingChallengeApplicationTests {
 
     @Test
     void whenValidInput_thenMaxProfit() throws Exception {
-        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
+//        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
+        String stockValues = "10, 7, 5, 8, 11, 9";
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StockRequest request = new StockRequest("latitude", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/stock/maxProfit")
+                .post("/stock/maxProfit")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
 //                .content(getRequestJsonString("latitude", "2021-08-04 10:01:00", "2021-08-04 10:06:00", stockValues))
@@ -121,9 +125,9 @@ public class CodingChallengeApplicationTests {
 
         mockMvc.perform(requestBuilder).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$['Buy value']", is(5)))
-                .andExpect(jsonPath("$['Sell value']", is(11)))
-                .andExpect(jsonPath("$['Max profit']", is(6)));
+                .andExpect(jsonPath("$['buyValue']", is(5)))
+                .andExpect(jsonPath("$['sellValue']", is(11)))
+                .andExpect(jsonPath("$['maxProfit']", is(6)));
 
     }
 
@@ -135,10 +139,10 @@ public class CodingChallengeApplicationTests {
         }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("Identifier", identifier);
-        jsonObject.put("Start date time", startTime);
-        jsonObject.put("End date time", endTime);
-        jsonObject.put("Array of stock prices", stockPrices);
+        jsonObject.put("identifier", identifier);
+        jsonObject.put("startDateTime", startTime);
+        jsonObject.put("endDateTime", endTime);
+        jsonObject.put("stockPrices", stockPrices);
         System.out.println(jsonObject.toJSONString());
         return jsonObject.toJSONString();
     }

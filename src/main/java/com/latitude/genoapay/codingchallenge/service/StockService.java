@@ -18,14 +18,23 @@ public class StockService {
 
 
     public boolean isValidRequest(StockRequest request) {
-        return StringUtils.hasText(request.getIdentifier()) && request.getEndDateTime() != null
-                && request.getStartDateTime() != null && request.getStockPrices().length != 0;
+        return StringUtils.hasText(request.getIdentifier().trim()) && request.getEndDateTime() != null
+                && request.getStartDateTime() != null && StringUtils.hasText(request.getStockPrices())
+                && request.getStockPrices().split(",").length > 0;
     }
 
     public StockResponse getMaximumProfit(StockRequest request) throws Exception {
         Date startTime = request.getStartDateTime();
         Date endTime = request.getEndDateTime();
-        int[] stockPricesArr = request.getStockPrices();
+        String[] stockPriceStr = request.getStockPrices().split(",");
+        if (stockPriceStr.length == 1) {
+            throw new Exception("ERROR: Atleast 2 values of Stock Prices should be provided ");
+        }
+
+        int[] stockPricesArr = new int[stockPriceStr.length];
+        for (int i = 0; i < stockPriceStr.length; i++) {
+            stockPricesArr[i] = Integer.parseInt(stockPriceStr[i].trim());
+        }
 
         Date dayStartTime = getDayStartTime(startTime);
         // If start time or end times are prior to day start time 10:00, the Index is assumed to be zero

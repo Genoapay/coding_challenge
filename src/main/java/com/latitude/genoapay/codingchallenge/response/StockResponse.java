@@ -11,17 +11,17 @@ public class StockResponse {
 
     private StockRequest stockRequest;
 
-    @JsonProperty("Processed date time")
-    @JsonDeserialize(using = JsonDateDeserializer.class)
+    @JsonProperty("processedDateTime")
+//    @JsonDeserialize(using = JsonDateDeserializer.class)
     private Date processedDateTime;
 
-    @JsonProperty("Max profit")
+    @JsonProperty("maxProfit")
     private int maxProfit;
 
-    @JsonProperty("Buy value")
+    @JsonProperty("buyValue")
     private int buyValue;
 
-    @JsonProperty("Sell value")
+    @JsonProperty("sellValue")
     private int sellValue;
 
     public StockResponse(StockRequest request, Date processedDateTime, int maxProfit, int buyValue, int sellValue) {
