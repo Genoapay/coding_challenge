@@ -13,8 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -51,7 +49,6 @@ public class CodingChallengeApplicationTests {
     @Test
     void whenValidInput_thenReturns200() throws Exception {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
         String stockValues = "10, 7, 5, 8, 11, 9";
         StockRequest request = new StockRequest("latitude", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
 
@@ -60,7 +57,6 @@ public class CodingChallengeApplicationTests {
                 .post("/stock/maxProfit")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
-//                .content(getRequestJsonString("latitude", "2021-08-04 10:01:00", "2021-08-04 10:06:00", stockValues))
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(requestBuilder).andExpect(status().isOk());
@@ -69,7 +65,6 @@ public class CodingChallengeApplicationTests {
 
     @Test
     void testResponseContentType() throws Exception {
-//        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
         String stockValues = "10, 7, 5, 8, 11, 9";
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StockRequest request = new StockRequest("latitude", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
@@ -78,7 +73,6 @@ public class CodingChallengeApplicationTests {
                 .post("/stock/maxProfit")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
-//                .content(getRequestJsonString("latitude", "2021-08-04 10:01:00", "2021-08-04 10:06:00", stockValues))
                 .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -91,7 +85,6 @@ public class CodingChallengeApplicationTests {
     @Test
         // Bad Request
     void whenInvalidParameters_thenReturns400() throws Exception {
-//        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
         String stockValues = "10, 7, 5, 8, 11, 9";
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StockRequest request = new StockRequest("", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
@@ -100,7 +93,6 @@ public class CodingChallengeApplicationTests {
                 .post("/stock/maxProfit")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
-//                .content(getRequestJsonString("", "2021-08-04 10:01:00", "2021-08-04 10:06:00", stockValues))
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(requestBuilder).andExpect(status().is4xxClientError())
@@ -111,7 +103,6 @@ public class CodingChallengeApplicationTests {
 
     @Test
     void whenValidInput_thenMaxProfit() throws Exception {
-//        int[] stockValues = new int[]{10, 7, 5, 8, 11, 9};
         String stockValues = "10, 7, 5, 8, 11, 9";
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StockRequest request = new StockRequest("latitude", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
@@ -120,7 +111,6 @@ public class CodingChallengeApplicationTests {
                 .post("/stock/maxProfit")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
-//                .content(getRequestJsonString("latitude", "2021-08-04 10:01:00", "2021-08-04 10:06:00", stockValues))
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(requestBuilder).andExpect(status().isOk())
@@ -131,20 +121,5 @@ public class CodingChallengeApplicationTests {
 
     }
 
-
-    private String getRequestJsonString(String identifier, String startTime, String endTime, int[] stockValues) {
-        JSONArray stockPrices = new JSONArray();
-        for (int stockValue : stockValues) {
-            stockPrices.add(stockValue);
-        }
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("identifier", identifier);
-        jsonObject.put("startDateTime", startTime);
-        jsonObject.put("endDateTime", endTime);
-        jsonObject.put("stockPrices", stockPrices);
-        System.out.println(jsonObject.toJSONString());
-        return jsonObject.toJSONString();
-    }
 
 }
