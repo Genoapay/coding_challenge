@@ -84,7 +84,7 @@ public class CodingChallengeApplicationTests {
 
     @Test
         // Bad Request
-    void whenInvalidParameters_thenReturns400() throws Exception {
+    void whenMissingParameters_thenReturns400() throws Exception {
         String stockValues = "10, 7, 5, 8, 11, 9";
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StockRequest request = new StockRequest("", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
@@ -100,9 +100,112 @@ public class CodingChallengeApplicationTests {
 
     }
 
+    @Test
+        //Outside of the stock value (mins - assuming 1 value per minute)
+    void whenInvalidParameters_TimesOutOfRange_thenReturns400() throws Exception {
+        String stockValues = "10, 7, 5, 8, 11, 9";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StockRequest request = new StockRequest("", df.parse("2021-08-04 10:10:00"), df.parse("2021-08-04 10:20:00"), stockValues);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/stock/maxProfit")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(requestBuilder).andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("ERROR")));
+    }
 
     @Test
-    void whenValidInput_thenMaxProfit() throws Exception {
+        // Equal start end times
+    void whenInvalidParameters_EqualStartEndTime_thenReturns400() throws Exception {
+        String stockValues = "10, 7, 5, 8, 11, 9";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StockRequest request = new StockRequest("", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:01:00"), stockValues);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/stock/maxProfit")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(requestBuilder).andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("ERROR")));
+    }
+
+    @Test
+        // Both start and end times are before 10:00 - the start of day
+    void whenInvalidParameters_BothStartAndEndBefore10_thenReturns400() throws Exception {
+        String stockValues = "10, 7, 5, 8, 11, 9";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StockRequest request = new StockRequest("", df.parse("2021-08-04 09:01:00"), df.parse("2021-08-04 09:10:00"), stockValues);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/stock/maxProfit")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(requestBuilder).andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("ERROR")));
+    }
+
+
+    @Test
+        //End date is before start Date
+    void whenInvalidParameters_EndDateBeforeStartDate_thenReturns400() throws Exception {
+        String stockValues = "10, 7, 5, 8, 11, 9";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StockRequest request = new StockRequest("", df.parse("2021-08-04 10:06:00"), df.parse("2021-08-04 10:01:00"), stockValues);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/stock/maxProfit")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(requestBuilder).andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("ERROR")));
+    }
+
+    @Test
+        // Atleast 2 stock values should be provided
+    void whenInvalidParameters_OnlyOneStockValue_thenReturns400() throws Exception {
+        String stockValues = "10";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StockRequest request = new StockRequest("", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/stock/maxProfit")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(requestBuilder).andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("ERROR")));
+    }
+
+    @Test
+        // All stock values are descending. In this case, NO profit can be made. Hence throwing an error
+    void whenInvalidParameters_AllStockValueDesc_thenReturns400() throws Exception {
+        String stockValues = "10";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StockRequest request = new StockRequest("", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/stock/maxProfit")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(requestBuilder).andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("ERROR")));
+    }
+
+
+    @Test
+    void whenValidInput_thenReturnsMaxProfit() throws Exception {
         String stockValues = "10, 7, 5, 8, 11, 9";
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StockRequest request = new StockRequest("latitude", df.parse("2021-08-04 10:01:00"), df.parse("2021-08-04 10:06:00"), stockValues);
@@ -120,6 +223,5 @@ public class CodingChallengeApplicationTests {
                 .andExpect(jsonPath("$['maxProfit']", is(6)));
 
     }
-
 
 }
