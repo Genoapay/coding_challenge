@@ -1,8 +1,6 @@
 package com.latitude.genoapay.codingchallenge.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.latitude.genoapay.codingchallenge.util.JsonDateDeserializer;
 
 import java.util.Date;
 
