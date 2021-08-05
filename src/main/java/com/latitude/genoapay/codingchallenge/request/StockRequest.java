@@ -12,11 +12,9 @@ public class StockRequest {
     private String identifier;
 
     @JsonProperty("Start date time")
-    @JsonDeserialize(using = JsonDateDeserializer.class)
     private Date startDateTime;
 
     @JsonProperty("End date time")
-    @JsonDeserialize(using = JsonDateDeserializer.class)
     private Date endDateTime;
 
     @JsonProperty("Array of stock prices")

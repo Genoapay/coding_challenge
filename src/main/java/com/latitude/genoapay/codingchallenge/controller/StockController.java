@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-//@RequestMapping("/stock")
+@RequestMapping("/stock")
 public class StockController {
 
     @Autowired
@@ -23,14 +23,12 @@ public class StockController {
     public ResponseEntity<Object> getMaxProfit(@RequestBody StockRequest request) {
         if (!stockService.isValidRequest(request)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ERROR: Invalid Request - Missing parameters");
-//            return ResponseEntity.badRequest().build();;
         }
 
         StockResponse response;
         try {
             response = stockService.getMaximumProfit(request);
             if (response.getMaxProfit() == 0) {
-
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: Cannot make any Profit within the Start and End Times");
             }
         } catch (Exception e) {
