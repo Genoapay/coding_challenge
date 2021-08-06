@@ -33,7 +33,11 @@ public class StockService {
 
         int[] stockPricesArr = new int[stockPriceStr.length];
         for (int i = 0; i < stockPriceStr.length; i++) {
-            stockPricesArr[i] = Integer.parseInt(stockPriceStr[i].trim());
+            try {
+                stockPricesArr[i] = Integer.parseInt(stockPriceStr[i].trim());
+            } catch (NumberFormatException e) {
+                throw new Exception("ERROR: Data should have numbers only");
+            }
         }
 
         Date dayStartTime = getDayStartTime(startTime);
