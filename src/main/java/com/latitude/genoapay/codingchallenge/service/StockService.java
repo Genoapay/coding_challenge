@@ -51,14 +51,6 @@ public class StockService {
         } else if (endIdx - startIdx < 2) {
             throw new Exception("ERROR: Time range should be atleast 2 mins");
         }
-        if (startIdx == endIdx) {
-            if (startIdx == 0) {
-                // If both start and end dates are prior to day start time, exception is thrown
-                throw new Exception("ERROR: Start and End Times are out of range");
-            } else {
-                throw new Exception("ERROR: Start and End Times are equal - Profit cannot be calculated");
-            }
-        }
         if (endIdx >= stockPricesArr.length) {
             // If end time is greater than the Array of stock prices, end index will be the last element in Stock prices
             endIdx = stockPricesArr.length - 1;
