@@ -44,6 +44,13 @@ public class StockService {
         // If start time or end times are prior to day start time 10:00, the Index is assumed to be zero
         int startIdx = getDiffInMinutes(dayStartTime, startTime);
         int endIdx = getDiffInMinutes(dayStartTime, endTime);
+        if (endIdx < startIdx) {
+            throw new Exception("ERROR: End date cannot be before start date");
+        } else if (startIdx > stockPricesArr.length) {
+            throw new Exception("ERROR: Start and End Times are out of range");
+        } else if (endIdx - startIdx < 2) {
+            throw new Exception("ERROR: Time range should be atleast 2 mins");
+        }
         if (startIdx == endIdx) {
             if (startIdx == 0) {
                 // If both start and end dates are prior to day start time, exception is thrown
@@ -51,19 +58,13 @@ public class StockService {
             } else {
                 throw new Exception("ERROR: Start and End Times are equal - Profit cannot be calculated");
             }
-        } else if (endIdx < startIdx) {
-            throw new Exception("ERROR: End date cannot be before start date");
-        } else if (startIdx > stockPricesArr.length) {
-            throw new Exception("ERROR: Start and End Times are out of range");
-        } else if (endIdx - startIdx < 2) {
-            throw new Exception("ERROR: Time range should be atleast 2 mins");
         }
-        if (endIdx > stockPricesArr.length) {
+        if (endIdx >= stockPricesArr.length) {
             // If end time is greater than the Array of stock prices, end index will be the last element in Stock prices
             endIdx = stockPricesArr.length - 1;
         }
 
-        int[] stockPrices = Arrays.copyOfRange(stockPricesArr, startIdx, endIdx);
+        int[] stockPrices = Arrays.copyOfRange(stockPricesArr, startIdx, endIdx + 1);
 
         int maxProfit = 0;
         int bestBuy = 0;
