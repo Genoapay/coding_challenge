@@ -33,6 +33,11 @@ public class StockPriceService {
 		
 		for(int i = startingIdx; i <= endingIdx; i++) {
 			
+			//this should not happen as there's no negative dollar value in stocks
+			if (stockPrices[i] < 0) 
+				continue;
+			
+			
 			if(stockPrices[i] > lowestBuyPrice) {
 				//set the profit as we have identified the 'lowest'
 				int profit = stockPrices[i] - lowestBuyPrice;

@@ -13,6 +13,65 @@ import com.latitude.genoapay.codingchallenge.utils.DateUtils;
 
 class StockBeanTest {
 	
+
+	@Test
+	void testDuplicateNumbers1() { 
+		Date yesterday = DateUtils.addDay(new Date(), -1);			
+		Date startDate = DateUtils.setTime(yesterday, 10, 0);
+		Date endDate = DateUtils.setTime(yesterday, 10, 5);
+
+		StockPriceService stockBean = new StockPriceService();
+		StockDetails stockDetails = new StockDetails();
+		stockDetails.setStartDate(startDate);
+		stockDetails.setEndDate(endDate);
+		
+		int[] stockPriceArr = { 5, 5, 5, 4, 4, 4 };
+		stockDetails.setStockPricesArr(stockPriceArr);
+		StockProfit stockProfit = stockBean.getMaxProfit(stockDetails);
+		assertEquals(0, stockProfit.getMaxProfit());
+		assertEquals(0, stockProfit.getBuyValue());  //buy value is 0 as there's no profit to make 
+		assertEquals(0, stockProfit.getSellValue()); //buy value is 0 as there's no profit to make 	
+	}
+	
+	@Test
+	void testDuplicateNumbers2() { 
+		Date yesterday = DateUtils.addDay(new Date(), -1);			
+		Date startDate = DateUtils.setTime(yesterday, 10, 0);
+		Date endDate = DateUtils.setTime(yesterday, 10, 5);
+
+		StockPriceService stockBean = new StockPriceService();
+		StockDetails stockDetails = new StockDetails();
+		stockDetails.setStartDate(startDate);
+		stockDetails.setEndDate(endDate);
+		
+		int[] stockPriceArr = { 4, 4, 4, 5, 5, 5 };
+		stockDetails.setStockPricesArr(stockPriceArr);
+		StockProfit stockProfit = stockBean.getMaxProfit(stockDetails);
+		assertEquals(1, stockProfit.getMaxProfit());
+		assertEquals(4, stockProfit.getBuyValue());  
+		assertEquals(5, stockProfit.getSellValue()); 
+	}
+	
+	@Test
+	void testAllDuplicateNumbers() { 
+		Date yesterday = DateUtils.addDay(new Date(), -1);			
+		Date startDate = DateUtils.setTime(yesterday, 10, 0);
+		Date endDate = DateUtils.setTime(yesterday, 10, 5);
+
+		StockPriceService stockBean = new StockPriceService();
+		StockDetails stockDetails = new StockDetails();
+		stockDetails.setStartDate(startDate);
+		stockDetails.setEndDate(endDate);
+		
+		int[] stockPriceArr = { 5, 5, 5, 5, 5, 5 };
+		stockDetails.setStockPricesArr(stockPriceArr);
+		StockProfit stockProfit = stockBean.getMaxProfit(stockDetails);
+		assertEquals(0, stockProfit.getMaxProfit());
+		assertEquals(0, stockProfit.getBuyValue());    //buy value is 0 as there's no profit to make 
+		assertEquals(0, stockProfit.getSellValue());   //buy value is 0 as there's no profit to make	
+	} 
+	
+	
 	@Test
 	void testBaseDate() {
 
