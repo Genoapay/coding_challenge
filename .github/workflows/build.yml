@@ -29,19 +29,8 @@ jobs:
         node-version: '16.x'
 
     - name: Build Maven Project
-      run: mvn -B package --file pom.xml    
-
-#    TODO
-#    - name: Publish Docker Image
-#      env:
-#        DOCKER_REGISTRY: ${{ env.docker.registry }}
-#        DOCKER_REPOSITORY: ${{ env.docker.repository }}
-#        IMAGE_TAG: ${{ env.docker.imageTag }}
-#      run: docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
+      run: mvn -B package --file pom.xml
 
     - name: Build Application
-      run: cd max_profit_calculator && npm run build
-
-#     TODO
-#     - name: Publish application resource
-#       run:
+      run:
+        cd max_profit_calculator && npm install && npm run build
