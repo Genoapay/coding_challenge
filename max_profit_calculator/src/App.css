@@ -1,0 +1,12 @@
+.card {
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.row {
+    padding: 32px 64px;
+}
+
+.col {
+    padding: 0 32px;
+}

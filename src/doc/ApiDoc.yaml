@@ -1,0 +1,76 @@
+swagger: "2.0"
+info:
+  description: ""
+  version: "0.1.0"
+  title: "Stock Service"
+basePath: "/v2"
+tags:
+  - name: "profit"
+    description: "Profit related endpoints"
+schemes:
+  - "https"
+  - "http"
+paths:
+  /maxProft:
+    post:
+      tags:
+        - "profit"
+      summary: "Calculate the max profit"
+      description: "Given the stock price list of yesterday, calculate the max profit"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/xml"
+      parameters:
+        - in: "body"
+          name: "maxProfitRequest"
+          description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/maxProfitRequest"
+      responses:
+        "200":
+          description: "Calculate max profit successfully."
+          schema:
+            $ref: "#/definitions/maxProfitResponse"
+        "400":
+          description: "Invalid request payload"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+definitions:
+  maxProfitRequest:
+    type: "object"
+    properties:
+      identifier:
+        type: "string"
+      startTime:
+        type: "string"
+        format: "yyyy-MM-DD HH:mm"
+      endTime:
+        type: "string"
+        format: "yyyy-MM-DD HH:mm"
+      priceList:
+        type: "array"
+        items:
+          type: "integer"
+  maxProfitResponse:
+    type: "object"
+    properties:
+      reqeust:
+        $ref: '#/definitions/maxProfitRequest'
+      processedTime:
+        type: "string"
+        format: "yyyy-MM-DD HH:mm"
+      maxProft:
+        type: "integer"
+      buyValue:
+        type: "integer"
+      sellValue:
+        type: "integer"
+  ErrorResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+      message:
+        type: "string"
