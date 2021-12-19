@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: ""
-  version: "0.1.0"
+  version: "0.0.1"
   title: "Stock Service"
 basePath: "/v2"
 tags:
@@ -51,6 +51,7 @@ definitions:
         format: "yyyy-MM-DD HH:mm"
       priceList:
         type: "array"
+        description: "Prices of every minute from start to end. Give null value if the price not present."
         items:
           type: "integer"
   maxProfitResponse:
