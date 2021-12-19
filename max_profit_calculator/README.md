@@ -1,6 +1,6 @@
 # Stock Max Profit Calculator
 
-This project is the client responding the max profit endpoint in stock service
+This project includes a stock service which has a max profit endpoint and a web application responding it.
 
 ## Local set up
 1. Run the `build.sh` in the project root folder to build the stock service docker image.
