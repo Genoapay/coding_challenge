@@ -1,0 +1,83 @@
+openapi: 3.0.1
+info:
+  title: Stock service api
+  description: Stock service api
+  termsOfService: ""
+  version: 1.0.0
+servers:
+  - url: http://localhost:8086/
+paths:
+  /stock/getmaxprofit:
+    post:
+      tags:
+        - stock rest api
+      summary: Get max profit
+      description: Get max profit
+      operationId: getMaxProfit
+      requestBody:
+        description: Stock info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMaxProfitRequest'
+      responses:
+        200:
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMaxProfitResponse'
+        404:
+          description: The requested resource was not found.
+          content: { }
+components:
+  schemas:
+    GetMaxProfitRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          nullable: false
+        startDate:
+          type: string
+          format: date-time
+          nullable: false
+        endDate:
+          type: string
+          format: date-time
+          nullable: false
+        stockPrices:
+          type: array
+          minItems: 1
+          items:
+            type: integer
+          nullable: false
+      required:
+        - name
+        - startDate
+        - endDate
+        - stockPrices
+    GetMaxProfitResponse:
+      type: object
+      properties:
+        stockRequest:
+          $ref: '#/components/schemas/GetMaxProfitRequest'
+        processedDateTime:
+          type: string
+          format: date-time
+        maxProfit:
+          type: integer
+        buyPrice:
+          type: integer
+        sellPrice:
+          type: integer
+      required:
+        - stockRequest
+    ErrorMessage:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        errorMessage:
+          type: string
