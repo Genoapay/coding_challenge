@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.latitude.genoapay</groupId>
     <artifactId>coding-challenge</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>coding-challenge</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -120,6 +120,20 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.5.0</version>
+                <configuration>
+                    <to>
+                        <image>${project.name}:${project.version}</image>
+                    </to>
+                    <container>
+                        <mainClass>com.latitude.genoapay.codingchallenge.CodingChallengeApplication</mainClass>
+                    </container>
+                </configuration>
+
             </plugin>
         </plugins>
     </build>
